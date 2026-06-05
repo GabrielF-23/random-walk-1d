@@ -27,8 +27,8 @@ Cada passo tem a mesma probabilidade de acontecer.<br>
 
 ### Parametros do modelo
 Temos 2 parametros nesse modelo:<br>
--`r`: número de caminhantes.<br>
--`s`: número de passos.<br>
+- `r`: número de caminhantes.<br>
+- `s`: número de passos.<br>
 
 Altere como desejar, por padrão o modelo vem:<br>
 `r = 1000`<br>

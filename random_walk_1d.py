@@ -3,7 +3,7 @@ import random as random
 
 
 def rw_1d(n):
-    '''Caminhante Aleatorio em 1D, onde 'n' = número de passos - 
+    '''Caminhante Aleatório em 1D, onde 'n' = número de passos - 
        Random Walk 1D, where 'n' = number of steps'''
 
     #Origem em x = 0
@@ -11,7 +11,7 @@ def rw_1d(n):
     x = 0
     a = [0]
 
-    #Condição do caminhante aleatorio em 1D 50% para direita ou 50% para esquerda.
+    #Condição do caminhante aleatório em 1D 50% para direita ou 50% para esquerda.
     #Random Walk 1D condition 50% to right or 50% to left
     for i in range(n):
         step = random.choice([1,2])
@@ -27,11 +27,11 @@ def rw_1d(n):
 
 #Rodadas
 #Runs.
-r = 10
+r = 2
 
 #Passos.
 #Steps.
-s = 10
+s = 3
 
 #Lista de caminhadas.
 #Walk list.
@@ -58,16 +58,34 @@ for a in walk:
     endp.append(a[-1])
 
 
+
+#Título principal.
+#Main tittle.
+fig.suptitle(
+    "Caminhante Aleatório 1D",
+    fontsize=14
+)
+
+if r == 1:
+    sim = f'{r} Simulação'
+else:
+    sim = f'{r} Simulações'
+
 #Trajetórias dos caminhantes.
 #Random walk trajectories.
-axs[0].set_title(f"Trajetória caminhante aleatorio. {s} passos - {r} runs")
+axs[0].set_title(f"Trajetória Caminhante Aleatório.\n {s} Passos - {sim}")
+axs[0].set_xlabel("Passos")
+axs[0].set_ylabel("Posição")
 axs[0].grid()
 
 #Histograma das posições finais.
 #Histogram of final positions.
 axs[1].hist(endp, bins=30)
-axs[1].set_title(f"Histograma de posições finais. {s} passos - {r} runs")
+axs[1].set_title(f"Histograma de Posições Finais\n {s} Passos - {sim}")
+axs[1].set_xlabel("Posição X")
+axs[1].set_ylabel("Probabilidade de cair em X")
 axs[1].grid()
 
+plt.tight_layout()
 plt.show()
 

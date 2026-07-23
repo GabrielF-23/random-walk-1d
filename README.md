@@ -1,67 +1,109 @@
-# Gerador de Caminhante Aleatório 1D
-Random Walk 1D Generator
+# Gerador de Caminhante Aleatório Gaussiano 1D
+Gaussian Random Walk 1D Generator
 
 🇧🇷 [Português](#português) | 🇺🇸 [English](#english)
-# Português
-## Sobre
-Esse programa foi desenvolvido como exercicio de aprendizado durante minha Iniciação Cientifica.
 
-O objetivo desse programa foi compreender os conceitos fundamentais de processos estocasticos, simulações computacionais e modelagem matematica atraves de um modelo simples de caminhante aleatorio em uma dimensão em Python.
+# Português
+
+## Sobre
+
+Esse programa foi desenvolvido como exercício de aprendizado durante minha Iniciação Científica.
+
+O objetivo desse programa foi compreender os conceitos fundamentais de processos estocásticos, difusão, simulações computacionais e modelagem matemática através de um modelo de caminhante aleatório gaussiano em uma dimensão utilizando Python.
 
 ## Descrição do modelo
-Um caminhante começa de um ponto x = 0 (origem).
-A cada passo ele tem 50% de chance de escolher dar um passo para direita ou esquerda.<br>
-Cada passo novo é dado por:
 
-        step = random.choice([1,2])
+Um caminhante começa na posição
 
-        if step == 1:
-            x += 1
-        else:
-            x -= 1
-            
-Quando `step == 1`: ele soma 1 a posição x dele.<br>
-Quando `step == 2`: ele subtrai 1 da posição x dele.<br>
+```
+x = 0
+```
 
-Cada passo tem a mesma probabilidade de acontecer.<br>
+A cada passo, seu deslocamento é sorteado a partir de uma distribuição normal (gaussiana) de média zero e desvio padrão σ:
 
-### Parametros do modelo
-Temos 2 parametros nesse modelo:<br>
-- `r`: número de caminhantes.<br>
-- `s`: número de passos.<br>
+```
+Δx ~ N(0, σ)
+```
 
-Altere como desejar, por padrão o modelo vem:<br>
-`r = 1000`<br>
-`s = 1000`
+No código, esse deslocamento é gerado por
 
-### Gráficos
-Após escolher a quantidade de caminhantes e a quantidade de passos, execute o programa e 
-ele vai gerar dois gráficos:<br>
+```python
+step = np.random.normal(0, sigma)
+```
 
-#### Gráfico A: Trajetória dos caminhantes
-Mostra a trajetória de todos os caminhantes ao longo dos passos.
+A posição do caminhante é então atualizada por
 
-#### Gráfico B: Histograma das posições finais.
-Mostra a distruibuição das posições finais de cada caminhante.
+```python
+x += step
+```
+
+Como a média da distribuição é igual a zero, não existe direção preferencial para o movimento. Entretanto, o tamanho de cada passo pode variar continuamente, diferentemente do modelo clássico onde os deslocamentos possuem apenas dois valores possíveis.
+
+O parâmetro σ controla a intensidade das flutuações:
+
+- valores pequenos produzem trajetórias mais suaves;
+- valores maiores produzem trajetórias mais dispersas.
+
+## Parâmetros do modelo
+
+O modelo possui três parâmetros principais:
+
+- `n_steps`: número de passos de cada caminhante;
+- `n_runs`: número total de caminhantes simulados;
+- `sigma`: desvio padrão da distribuição normal utilizada para gerar cada deslocamento.
+
+Por padrão o programa utiliza
+
+```
+n_steps = 1000
+n_runs = 1000
+sigma = 0.1
+```
+
+## Gráficos
+
+Após executar o programa, são gerados três gráficos.
+
+### Gráfico A — Trajetórias dos caminhantes
+
+Mostra a evolução temporal da posição de todos os caminhantes ao longo da simulação.
+
+### Gráfico B — Distribuição das posições finais
+
+Apresenta um histograma das posições finais dos caminhantes após todos os passos, permitindo observar a distribuição estatística dos resultados.
+
+### Gráfico C — Deslocamento Quadrático Médio (MSD)
+
+Mostra o deslocamento quadrático médio
+
+```
+⟨x²(t)⟩
+```
+
+calculado para todos os caminhantes em função do número de passos.
+
+Além dos dados simulados, também é apresentada a solução teórica
+
+```
+⟨x²(t)⟩ = σ² t
+```
+
+permitindo comparar a simulação numérica com o comportamento esperado para um processo difusivo gaussiano.
 
 ## Ferramentas e Bibliotecas
+
 - Python
+- NumPy
 - Matplotlib
-- Random
 
 ## Licença
+
 Este projeto está licenciado sob a licença MIT.
 
 ## Autor
+
 Gabriel Freitas.
 
 # English
+
 WIP.
-
-
-
-
-
-
-
- 

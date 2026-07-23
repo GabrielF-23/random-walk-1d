@@ -1,91 +1,107 @@
-import matplotlib.pyplot as plt 
-import random as random
+import matplotlib.pyplot as plt
+import numpy as np
 
-
-def rw_1d(n):
-    '''Caminhante Aleatório em 1D, onde 'n' = número de passos - 
-       Random Walk 1D, where 'n' = number of steps'''
-
-    #Origem em x = 0
-    #Origin at x = 0
+def random_walk1d(n_steps, sigma):
     x = 0
-    a = [0]
 
-    #Condição do caminhante aleatório em 1D 50% para direita ou 50% para esquerda.
-    #Random Walk 1D condition 50% to right or 50% to left
-    for i in range(n):
-        step = random.choice([1,2])
+    trajectory = [0]
 
-        if step == 1:
-            x += 1
-        else:
-            x -= 1
+    for i in range(n_steps):
 
-        a.append(x)
-    return a
+        step = np.random.normal(0, sigma)
+
+        x += step
+
+        trajectory.append(x)
+
+    return trajectory
 
 
-#Rodadas
-#Runs.
-r = 2
+n_steps = 1000
 
-#Passos.
-#Steps.
-s = 3
+n_runs = 1000
 
-#Lista de caminhadas.
-#Walk list.
-walk = []
-
-#For que gera varios caminhantes da origem.
-#Loop that create multiple walkers from the origin.
-for i in range(r):
-    walk.append(rw_1d(s))
-
-#Gera o subplot.
-#Generate the subplot.
-fig, axs = plt.subplots(1, 2, figsize=(12,5), dpi=120)
+sigma = 0.1
 
 
-#Lista de pontos finais das trajetórias.
-#Endpoints of the trajectories list.
+walks = []
+
+
+for i in range(n_runs):
+    walks.append(random_walk1d(n_steps,sigma))
+
+
+fig, axs = plt.subplots(1,3, figsize=(18,5), dpi=120)
+
+
+for walk in walks:
+    axs[0].plot(walk)
+
+
+axs[0].set_title("Trajetórias dos Caminhantes")
+axs[0].set_xlabel("Passos")
+axs[0].set_ylabel("X")
+axs[0].grid()
+
+
 endp = []
 
-#Percorre a lista 'walk' e cria lista de todos os pontos finais das trajetórias.
-#Iterates through the 'walk' list and creates a list of all the endpoints of the trajectories.
-for a in walk:
-    axs[0].plot(a)
-    endp.append(a[-1])
+
+for walk in walks:
+    endp.append(walk[-1])
 
 
+axs[1].hist(endp,bins=50,density=True)
 
-#Título principal.
-#Main tittle.
+axs[1].set_title("Distribuição Final")
+axs[1].set_xlabel("Posição X Final")
+axs[1].set_ylabel("Densidade")
+axs[1].grid()
+
+
+msd = []
+
+
+for t in range(n_steps+1):
+
+    x_s = []
+
+
+    for walk in walks:
+
+        x_s.append(walk[t]**2)
+
+
+    msd.append(np.mean(x_s))
+
+
+axs[2].plot(
+    range(n_steps+1),
+    msd,
+    label="Caminhantes"
+)
+
+
+axs[2].plot(
+    range(n_steps+1),
+    sigma**2*np.arange(n_steps+1),
+    label="DQM"
+)
+
+
+axs[2].set_title("Deslocamento Quadrático Médio")
+axs[2].set_xlabel("Passos")
+axs[2].set_ylabel("<x²>")
+axs[2].grid()
+axs[2].legend()
+
+
 fig.suptitle(
-    "Caminhante Aleatório 1D",
+    f"Caminhante Aleatório Gaussiano 1D\n"
+    f"Δx ~ N(0, {sigma}) | {n_steps} passos - {n_runs} simulações",
     fontsize=14
 )
 
-if r == 1:
-    sim = f'{r} Simulação'
-else:
-    sim = f'{r} Simulações'
-
-#Trajetórias dos caminhantes.
-#Random walk trajectories.
-axs[0].set_title(f"Trajetória Caminhante Aleatório.\n {s} Passos - {sim}")
-axs[0].set_xlabel("Passos")
-axs[0].set_ylabel("Posição")
-axs[0].grid()
-
-#Histograma das posições finais.
-#Histogram of final positions.
-axs[1].hist(endp, bins=30)
-axs[1].set_title(f"Histograma de Posições Finais\n {s} Passos - {sim}")
-axs[1].set_xlabel("Posição X")
-axs[1].set_ylabel("Probabilidade de cair em X")
-axs[1].grid()
 
 plt.tight_layout()
 plt.show()
-
